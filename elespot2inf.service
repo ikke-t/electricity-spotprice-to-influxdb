@@ -1,0 +1,14 @@
+[Unit]
+Description=Electricity spot prices to influxdb
+After=syslog.target network.target
+
+[Service]
+Type=simple
+#User=pi
+WorkingDirectory=/home/pi/src/elespot2inf
+ExecStart=/home/pi/src/elespot2inf/virtualenv/bin/python /home/pi/src/elespot2inf/elespot2inf.py
+Restart=on-abort
+RuntimeMaxSec=90
+
+[Install]
+WantedBy=multi-user.target

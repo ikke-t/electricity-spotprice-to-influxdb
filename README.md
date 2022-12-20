@@ -44,12 +44,11 @@ Note there is the calculation for adding tax there, and converting the prices fr
 
 # Make it run periodicly
 
-###TODO
 Here are systemd example files for running this periodicly. The
 [elespot2inf.service](./elespot2inf.service) file defines the service, check
 the paths apply to your setup. Then the correspondig
 [elespot2inf.timer](./elespot2inf.timer) makes it run every day. Write the
-files to your home dir ~/.config/systemd/user, and make systemd aware of them,
+files under your home dir ~/.config/systemd/user, and make systemd aware of them,
 and set linger to your user so they keep running after you log out. Here is
 example running them as pi user:
 
@@ -60,4 +59,7 @@ systemctl --user enable --now elespot2inf.timer
 sudo loginctl enable-linger pi
 ```
 
-This keeps feeding the influxdb daily.
+This keeps feeding the influxdb daily. As of writing I set the timer to
+trigger a bit after 13 o'clock and again couple of hours later just
+for certainty. There could be some logic added to make sure run succeeds,
+and loop until that. Now it's just run twice a day.

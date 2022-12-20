@@ -1,0 +1,10 @@
+[Unit]
+Description=Run elespot2inf daily
+
+[Timer]
+OnBootSec=0min
+OnCalendar=*-*-* 13:15,15
+RandomizedDelaySec=600
+
+[Install]
+WantedBy=timers.target
