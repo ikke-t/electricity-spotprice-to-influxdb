@@ -118,3 +118,5 @@ buildah bud -t elespot2inf:0.1 containerfile
 skopeo copy containers-storage:localhost/elespot2inf:0.1  docker://quay.io/ikke/elespot2inf:0.1
 ```
 
+This is also now added to Quay auto build after any push to this repo.
+
