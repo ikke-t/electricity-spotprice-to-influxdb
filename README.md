@@ -88,7 +88,7 @@ Description=Collect electricity prices
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/podman run --rm  -t -v /home/user/.ele2inf:/data:z  quay.io/ikke-t/elespot2inf:latest
+ExecStart=/usr/bin/podman run --rm  -t -v /home/user/.ele2inf:/data:z  quay.io/ikke/elespot2inf:latest
 EOF
 ```
 
