@@ -63,3 +63,58 @@ This keeps feeding the influxdb daily. As of writing I set the timer to
 trigger a bit after 13 o'clock and again couple of hours later just
 for certainty. There could be some logic added to make sure run succeeds,
 and loop until that. Now it's just run twice a day.
+
+# Use container
+
+I had problems with Raspbian, and got enough. I made a small utility container
+that just runs this script. I can be made to run periodically using podman and
+systemd.
+
+Single run for test purpose
+
+```
+podman run --rm  -t -v $PWD:/data:z  localhost/elespot2inf:0.1
+```
+
+You can pass configuration file name with ```-e CONF=filename``` where filename
+is relational path to /data.
+
+To make it run peridically in systemd, use systemd.timer:
+
+```
+cat > .config/systemd/user/ele2inf.service << EOF
+[Unit]
+Description=Collect electricity prices
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/podman run --rm  -t -v /home/user/.ele2inf:/data:z  quay.io/ikke-t/elespot2inf:latest
+EOF
+```
+
+```
+cat > .config/systemd/user/ele2inf.timer << EOF
+[Unit]
+Description=Collect electricity prices perdiodic jobs every evening
+Description=Run ele2inf 
+
+[Timer]
+OnBootSec=5min
+OnCalendar=*-*-* 14-20:00
+RandomizedDelaySec=10min
+AccuracySec=1
+
+[Install]
+WantedBy=default.target
+EOF
+```
+
+## Rebuilding the container
+
+As a reminder to myself, this was the command I uploaded the stuff to quay.io:
+
+```
+buildah bud -t elespot2inf:0.1 containerfile
+skopeo copy containers-storage:localhost/elespot2inf:0.1  docker://quay.io/ikke/elespot2inf:0.1
+```
+
