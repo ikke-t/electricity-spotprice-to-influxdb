@@ -26,6 +26,7 @@ import json
 import configparser
 import logging
 import pandas as pd
+import sys
 
 from entsoe import EntsoePandasClient
 
@@ -90,12 +91,16 @@ if __name__ == "__main__":
 	# pylint: disable=C0103
     error = False
     config = configparser.ConfigParser()
-    config_path = 'elespot2inf.ini'
+    if len(sys.argv) > 1:
+        config_path = sys.argv[1]
+    else:
+        config_path = 'elespot2inf.ini'
     config.read(config_path)
 
     verbosity = config.get('debug', 'verbosity', fallback='NOTSET')
     logging.basicConfig(level=verbosity, format='%(levelname)s:%(message)s')
     logging.debug('loglevel %s', verbosity)
+    logging.debug('using config %s', config_path)
 
     influxdb_client = InfluxDBClient(url=config.get('influx2', 'url'),
                                      token=config.get('influx2', 'token'),
