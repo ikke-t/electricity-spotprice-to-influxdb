@@ -85,10 +85,15 @@ To make it run peridically in systemd, use systemd.timer:
 cat > .config/systemd/user/ele2inf.service << EOF
 [Unit]
 Description=Collect electricity prices
+After=network.target
+Wants=network.target
 
 [Service]
 Type=simple
 ExecStart=/usr/bin/podman run --rm  -t -v /home/user/.ele2inf:/data:z  quay.io/ikke/elespot2inf:latest
+
+[Install]
+WantedBy=default.target
 EOF
 ```
 
